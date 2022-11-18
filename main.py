@@ -16,12 +16,15 @@ df = pd.read_csv('assignment3-data-1.csv')
 df = df[['phi', 'psi']]
 df = df.dropna()
 
+# Scatter plot of the data using seaborn
+sns.scatterplot(x='phi', y='psi', data=df, c='blue')
+plt.show()
+
 # heatmap with x and y as phi and psi with plt
-plt.hist2d(df['phi'], df['psi'], bins=500)
+plt.hist2d(df['phi'], df['psi'], bins=500, cmap='jet')
 plt.show()
 
 # Perform k-means clustering on df with 3 clusters
-# Clustering with more than 3 clusters doesn't seem that accurate using k-means.
 kmeans = KMeans(n_clusters=3, n_init=10, random_state=0)
 kmeans.fit(df)
 y_kmeans = kmeans.predict(df)

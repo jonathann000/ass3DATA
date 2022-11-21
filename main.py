@@ -80,7 +80,7 @@ plt.show()
 # Use DBSCAN to cluster the data. How does it compare to k-means?
 
 # DBSCAN
-# Compute DBSCAN #eps=20 minS=50
+# Compute DBSCAN #eps=20 minS=100
 db = DBSCAN(eps=20, min_samples=100).fit(df)
 core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
 core_samples_mask[db.core_sample_indices_] = True

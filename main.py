@@ -77,6 +77,34 @@ plt.show()
 # way)? (Hint: since both phi and psi are periodic attributes, you can think of
 # shifting/translating them by some value and then use the modulo operation.)
 
+# no clashes, psi fixed at 165 and phi varies from -170 to -70
+# no clashes, phi fixed at -80 and psi varies from -55 to 10 and 90 to 180
+
+# shift psi below -110 by 360
+dfShifted = df.copy()
+dfShifted.loc[dfShifted['psi'] < -110, 'psi'] += 360
+#dfShifted['phi'] = dfShifted['phi'].apply(lambda x: x + 360 if x < 0 else x)
+#dfShifted['psi'] = dfShifted['psi'].apply(lambda x: x + 360 if x < 0 else x)
+
+# Perform k-means clustering on dfShifted with 3 clusters
+kmeansShifted = KMeans(n_clusters=3, n_init=10, random_state=0)
+kmeansShifted.fit(dfShifted)
+y_kmeansShifted = kmeansShifted.predict(dfShifted)
+
+# Plot the cluster centers and the data points on a 2D plane
+plt.scatter(dfShifted['phi'], dfShifted['psi'], c=y_kmeansShifted, s=10, cmap='Oranges', edgecolor='black', linewidths=0.5)
+plt.xlabel('phi')
+plt.ylabel('psi')
+plt.title('K-means clustering on shifted data')
+centers = kmeansShifted.cluster_centers_
+plt.scatter(centers[:, 0], centers[:, 1], c='limegreen', s=200, alpha=1, marker='X', linewidths=1)
+plt.show()
+
+# Validating clustering with silhouette score
+print('Silhouette score for k-means clustering with k set to 3 on shifted data')
+print(silhouette_score(dfShifted, y_kmeansShifted))
+
+
 # Use DBSCAN to cluster the data. How does it compare to k-means?
 
 # DBSCAN
